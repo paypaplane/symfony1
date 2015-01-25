@@ -25,6 +25,7 @@ That's the tricky bit. We don't want to break your legacy svn workflow, because 
 Our preferred workaround can be found in these scripts:
 
 [Install Symfony and Doctrine](http://trac.apostrophenow.org/browser/sandboxes/asandbox/branches/1.5/install-symfony)
+
 [Update Your Project, Symfony and Doctrine](http://trac.apostrophenow.org/browser/sandboxes/asandbox/branches/1.5/update)
 
 The first script is a one-time installation tool. The second script does an `svn up` of your project, then `git pull` for both Symfony and Doctrine.
