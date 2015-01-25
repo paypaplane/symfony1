@@ -31,11 +31,19 @@ Installation
 
 See http://symfony.com/legacy/doc/getting-started/1_4/en/03-Symfony-Installation
 
-Option 1: Using Git submodules:
+Option 1: Using Git submodules (if your project is in git):
 
     git init # your project
     git submodule add https://github.com/punkave/symfony1 lib/vendor/symfony
     git submodule update --init --recursive
+
+Option 2: Using svn externals (if your project is still in svn):
+
+    svn propedit svn:externals lib/vendor
+
+    [paste in as one line:]
+
+    symfony https://github.com/punkave/symfony1
 
 Documentation
 -------------
