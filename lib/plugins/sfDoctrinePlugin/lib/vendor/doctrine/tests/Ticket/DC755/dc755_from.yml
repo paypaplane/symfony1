@@ -1,3 +1,0 @@
-755Test:
-  columns:
-    test_col: {type: integer}
