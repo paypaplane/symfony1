@@ -7,6 +7,13 @@ This is a community driven fork of symfony 1, as official support [ended in Nove
 
 **Please do not use this fork for new projects. You should move on.** If you like PHP, check out [Symfony2](http://symfony.com/).
 
+Acknowledgements
+----------------
+
+We are using the [drak fork of Doctrine 1.2](https://github.com/drak/doctrine1), and we have cherry-picked backwards-compatible PHP compatibility fixes from the [L'Express fork of Symfony 1.4](https://github.com/lexpress/symfony1). That is a fine fork but its goals include new backwards-incompatible features, thus this separate fork for maintenance work only.
+
+LEGACY README FOLLOWS
+
 About symfony
 -------------
 
