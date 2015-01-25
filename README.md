@@ -20,18 +20,21 @@ PHP 5.3.4 and up. See prerequisites on http://symfony.com/legacy/doc/getting-sta
 Installation
 ------------
 
-You will need both this fork and the `drak` fork of Doctrine 1.2, which provides similar maintenance of Doctrine.
+That's the tricky bit. We don't want to break your legacy svn workflow, because it's not broken. We would like to use github's support for svn, but it has [two](https://github.com/isaacs/github/issues/344) [bugs](https://github.com/isaacs/github/issues/345) that get in the way of using svn externals to solve the problem of installing symfony and doctrine.
 
-Using svn externals (hey, we told you this was a legacy maintenance fork):
+Our preferred workaround can be found in these scripts:
 
-    svn propedit svn:externals lib/vendor
+[Install Symfony and Doctrine](http://trac.apostrophenow.org/browser/sandboxes/asandbox/branches/1.5/install-symfony)
+[Update Your Project, Symfony and Doctrine](http://trac.apostrophenow.org/browser/sandboxes/asandbox/branches/1.5/update)
 
-    [paste in these lines:]
+The first script is a one-time installation tool. The second script does an `svn up` of your project, then `git pull` for both Symfony and Doctrine.
 
-    symfony https://github.com/punkave/symfony1
-    symfony/lib/plugins/sfDoctrinePlugin/lib/vendor/doctrine https://github.com/drak/doctrine1/lib
+Make sure you remove your existing `lib/vendor/symfony` folder, remove any `svn:externals` setting that is refreshing it, and `svn:ignore` it before switching over to this approach.
+
+**"What about composer?"** We are open to a pull request for composer support, as long as it does not break things for those of us who are not using it.
 
 LEGACY README FOLLOWS
+---------------------
 
 About symfony
 -------------
