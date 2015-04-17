@@ -1,5 +1,11 @@
+lib/plugins/sfDoctrinePlugin/test/functional/fixtures/apps/*
 lib/plugins/sfDoctrinePlugin/test/functional/fixtures/cache
-lib/plugins/sfPropelPlugin/test/functional/fixtures/data
+lib/plugins/sfDoctrinePlugin/test/functional/fixtures/data/*
+lib/plugins/sfPropelPlugin/test/functional/fixtures/apps/*
 lib/plugins/sfPropelPlugin/test/functional/fixtures/cache
-test/functional/fixtures/log
+lib/plugins/sfPropelPlugin/test/functional/fixtures/data/*
+
+lib/plugins/sfDoctrinePlugin/test/functional/fixtures/test
+
 test/functional/fixtures/cache
+test/functional/fixtures/log
