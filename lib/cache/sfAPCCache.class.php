@@ -106,6 +106,10 @@ class sfAPCCache extends sfCache
   {
     if ($info = $this->getCacheInfo($key))
     {
+      // APCu has incorrectly named the "mtime" field "modification_time" - see https://github.com/krakjoe/apcu/commit/4f47d6dea51cf00ab13e623a6dd91c3d96c0fcc4#diff-9476a04c2256e02b8f75fc66db3beb5eL1510      
+      if(array_key_exists('modification_time', $info)) {
+          return $info['creation_time'] + $info['ttl'] > time() ? $info['modification_time'] : 0;
+      }
       return $info['creation_time'] + $info['ttl'] > time() ? $info['mtime'] : 0;
     }
 
