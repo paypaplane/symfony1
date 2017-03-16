@@ -13,10 +13,5 @@
         "ozsynergy/doctrine1": "Doctrine plugin",
         "psr/log": "Psr logger"
     },
-    "extra": {
-        "branch-alias": {
-            "dev-1.4": "1.4-dev"
-        }
-    },
     "bin": ["data/bin/symfony"]
 }
