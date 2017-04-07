@@ -297,6 +297,11 @@ abstract class sfPager implements Iterator, Countable
   {
     return $this->nbResults;
   }
+  
+  public function getQuickJumpLabel()
+  {
+    return $this->getFirstIndice() . '-' . $this->getLastIndice() . ' of ' . $this->nbResults;
+  }
 
   /**
    * Sets the number of results.
@@ -326,6 +331,16 @@ abstract class sfPager implements Iterator, Countable
   public function getLastPage()
   {
     return $this->lastPage;
+  }
+  
+  /**
+   * Returns the number of pages.
+   *
+   * @return integer
+   */
+  public function getNbPages()
+  {
+    return ceil($this->nbResults / $this->maxPerPage);
   }
 
   /**
