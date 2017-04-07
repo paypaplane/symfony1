@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -53,7 +53,7 @@ class sfVarLogger extends sfLogger
    * Each log entry has the following attributes:
    *
    *  * priority
-   *  * time   
+   *  * time
    *  * message
    *  * type
    *  * debugStack
@@ -156,7 +156,7 @@ class sfVarLogger extends sfLogger
    * Returns the debug stack.
    *
    * @return array
-   * 
+   *
    * @see debug_backtrace()
    */
   protected function getDebugBacktrace()
@@ -172,7 +172,8 @@ class sfVarLogger extends sfLogger
     // remove sfLogger and sfEventDispatcher from the top of the trace
     foreach ($traces as $i => $trace)
     {
-      $class = isset($trace['class']) ? $trace['class'] : substr($file = basename($trace['file']), 0, strpos($file, '.'));
+
+      $class = isset($trace['class']) ? $trace['class'] : substr($file = isset($trace['file']) ? basename($trace['file']) :'' , 0, strpos($file, '.'));
 
       if (
         !class_exists($class)
