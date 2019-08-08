@@ -3,19 +3,13 @@ About this version
 
 This is a community driven fork of symfony 1, as official support [ended in November 2012](http://symfony.com/blog/symfony-1-4-end-of-maintenance-what-does-it-mean). (Also note: new tickets can no longer be opened on the original Symfony 1.4 site.)
 
-**This fork is solely intended to keep legacy Symfony 1.4 applications running securely** on currently-maintained versions of PHP, **without changes to your application code** unless security absolutely requires them. PHP 5.3.4 is a minimum requirement. We actively test with PHP 5.4.x and are incorporating community fixes for 5.5.x and above.
+**This fork is mainly intended to keep legacy Symfony 1.4 applications running securely** on currently-maintained versions of PHP, **without changes to your application code** unless security absolutely requires them. PHP 7 is the version it is built and tested on.  
 
-**Please do not use this fork for new projects. You should move on.** If you like PHP, check out [Symfony2](http://symfony.com/).
 
 Acknowledgements
 ----------------
 
 We are using the [drak fork of Doctrine 1.2](https://github.com/drak/doctrine1), and we have cherry-picked backwards-compatible PHP compatibility fixes from the [L'Express fork of Symfony 1.4](https://github.com/lexpress/symfony1). That is a fine fork but its goals include new backwards-incompatible features, thus this separate fork for maintenance work only.
-
-Requirements
-------------
-
-PHP 5.3.4 and up. See prerequisites on http://symfony.com/legacy/doc/getting-started/1_4/en/02-Prerequisites
 
 Installation
 ------------
