@@ -59,18 +59,20 @@ class sfCacheSessionStorage extends sfStorage
     // create cache instance
     if (isset($this->options['cache']) && $this->options['cache']['class'])
     {
+
       $this->cache = new $this->options['cache']['class'](is_array($this->options['cache']['param']) ? $this->options['cache']['param'] : array());
     }
     else
     {
-      throw new InvalidArgumentException('sfCacheSessionStorage requires cache option.');
+      throw new InvalidArgumentException('sfCacheSessionStorage requires cache option.'.print_r($this->options,1).print_r($options,1));
     }
 
     $this->context     = sfContext::getInstance();
 
+    // Request + response objects only exist when using symfony's request handler
     $this->dispatcher  = $this->context->getEventDispatcher();
-    $this->request     = $this->context->getRequest();
-    $this->response    = $this->context->getResponse();
+    $this->request     = $this->context->getRequest() ?: new sfWebRequest(new sfEventDispatcher());
+    $this->response    = $this->context->getResponse() ?: new sfWebResponse( new sfEventDispatcher());
 
     $cookie = $this->request->getCookie($this->options['session_name']);
 
