@@ -1,6 +1,6 @@
 {
     "name": "ozsynergy/symfony1",
-    "description": "Fork of symfony 1.4 from punkave, php 7.1 compatability without BC breaks of Lexpress",
+    "description": "Fork of symfony 1.4 from punkave, php 7.2 compatability and without BC breaks",
     "license": "MIT",
     "require-dev": {
         "psr/log": "*"
