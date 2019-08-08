@@ -19,10 +19,10 @@ class sfRedisCache extends sfCache
 	 * * redis: A Redis object (optional)
 	 *
 	 * * host:       The default host (default to localhost)
-	 * * port:       The port for the default server (default to 11211)
-	 * * persistent: true if the connection must be persistent, false otherwise (true by default)
+	 * * port:       The port for the default server (default to 6379)
+	 * * select:     Database number to connect to 
 	 *
-	 * * servers:    An array of additional servers (keys: host, port, persistent)
+	 * * servers:    An array of additional servers (keys: host, port, select)
 	 *
 	 * * see sfCache for options available for all drivers
 	 *
