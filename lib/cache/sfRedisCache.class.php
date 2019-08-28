@@ -4,6 +4,7 @@ class sfRedisCache extends sfCache
 {
 	const TIME_OUT = 3;
 	const DEFAULT_TTL = 7200; // 2 hours
+	const RETRIES = 3;
 
 	/**
 	 * @var Redis $redis
@@ -20,7 +21,7 @@ class sfRedisCache extends sfCache
 	 *
 	 * * host:       The default host (default to localhost)
 	 * * port:       The port for the default server (default to 6379)
-	 * * select:     Database number to connect to 
+	 * * select:     Database number to connect to
 	 *
 	 * * servers:    An array of additional servers (keys: host, port, select)
 	 *
@@ -41,12 +42,14 @@ class sfRedisCache extends sfCache
 		} else {
 			$this->redis = new Redis();
 			$server = sfConfig::get("app_redis_server", []); // Pull config from app.yml
-			if ($server) {
-				$port = isset($server['port']) ? $server['port'] : 6379;
-				if (!$this->redis->connect($server['host'], $port, self::TIME_OUT))
-				{
-					throw new sfInitializationException(sprintf('Unable to connect to the redis server (%s:%s).', $server['host'], $port));
-				}
+			if (!$server) {
+				throw new sfInitializationException('Missing server configuration.'); // in app.yml
+			}
+
+			$port = isset($server['port']) ? $server['port'] : 6379;
+			if (!$this->redis->connect($server['host'], $port, self::TIME_OUT))
+			{
+				throw new sfInitializationException(sprintf('Unable to connect to the redis server (%s:%s).', $server['host'], $port));
 			}
 
 			if ($this->getOption('auth')) {
@@ -76,8 +79,7 @@ class sfRedisCache extends sfCache
 	 */
 	public function get($key, $default = null)
 	{
-		$value = $this->redis->get($this->getOption('prefix').$key);
-
+		$value = $this->proxyGet($this->getOption('prefix') . $key);
 		return false === $value ? $default : $value;
 	}
 
@@ -86,7 +88,8 @@ class sfRedisCache extends sfCache
 	 */
 	public function has($key)
 	{
-		return !(false === $this->redis->get($this->getOption('prefix').$key));
+		$redisResult = $this->proxyGet($this->getOption('prefix') . $key);
+		return !(false === $redisResult);
 	}
 
 	/**
@@ -103,8 +106,8 @@ class sfRedisCache extends sfCache
 		if ($this->getOption('storeCacheInfo', false)) {
 			$this->setCacheInfo($key);
 		}
-
-		return  $this->redis->setEx($this->getOption('prefix').$key, $lifetime, $data);
+		$redisResult = $this->proxySetEx($this->getOption('prefix').$key, $lifetime, $data);
+		return $redisResult;
 	}
 
 	/**
@@ -183,7 +186,7 @@ class sfRedisCache extends sfCache
 	 */
 	protected function getMetadata($key)
 	{
-		return $this->redis->get($this->getOption('prefix').'_metadata'.self::SEPARATOR.$key);
+		return $this->proxyGet($this->getOption('prefix').'_metadata'.self::SEPARATOR.$key);
 	}
 
 	/**
@@ -194,7 +197,7 @@ class sfRedisCache extends sfCache
 	 */
 	protected function setMetadata($key, $lifetime)
 	{
-		$this->redis->setEx($this->getOption('prefix').'_metadata'.self::SEPARATOR.$key, self::DEFAULT_TTL, ['lastModified' => time(), 'timeout' => time() + $lifetime]);
+		$this->proxySetEx($this->getOption('prefix').'_metadata'.self::SEPARATOR.$key, self::DEFAULT_TTL, ['lastModified' => time(), 'timeout' => time() + $lifetime]);
 	}
 
 	/**
@@ -205,7 +208,7 @@ class sfRedisCache extends sfCache
 	 */
 	protected function setCacheInfo($key, $delete = false)
 	{
-		$keys = $this->redis->get($this->getOption('prefix').'_metadata');
+		$keys = $this->proxyGet($this->getOption('prefix').'_metadata');
 		if (!is_array($keys))
 		{
 			$keys = array();
@@ -223,7 +226,7 @@ class sfRedisCache extends sfCache
 			}
 		}
 
-		$this->redis->set($this->getOption('prefix').'_metadata', $keys, 0);
+		$this->proxySetEx($this->getOption('prefix').'_metadata', 0, $keys);
 	}
 
 	/**
@@ -231,12 +234,48 @@ class sfRedisCache extends sfCache
 	 */
 	protected function getCacheInfo()
 	{
-		$keys = $this->redis->get($this->getOption('prefix').'_metadata');
+		$keys = $this->proxyGet($this->getOption('prefix').'_metadata');
 		if (!is_array($keys))
 		{
 			return [];
 		}
 
 		return $keys;
+	}
+
+
+	public function proxyGet($key, $retries = self::RETRIES)
+	{
+		try {
+			$value = $this->redis->get($key);
+		} catch (RedisException $e) {
+			UtilLog::shortError("RedisException get($key) -> {$e->getMessage()}",
+				[
+					'error' => $this->redis->getLastError(),
+					'trace' => $e->getTraceAsString()
+				]);
+			if ($retries) {
+				return $this->proxyGet($key, $retries-1);
+			}
+		}
+		return $value;
+	}
+
+	public function proxySetEx($key, $ttl, $value, $retries = self::RETRIES)
+	{
+		try {
+			$value = $this->redis->setEx($key, $ttl, $value);
+		} catch (RedisException $e) {
+			UtilLog::shortError("RedisException setEx($key) -> {$e->getMessage()}",
+				[
+					'error' => $this->redis->getLastError(),
+					'trace' => $e->getTraceAsString()
+				]);
+			if ($retries) {
+				return $this->proxySetEx($key, $ttl, $value, $retries -1);
+			}
+		}
+		return $value;
+
 	}
 }

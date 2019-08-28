@@ -5,7 +5,34 @@ This is a community driven fork of symfony 1, as official support [ended in Nove
 
 **This fork is solely intended to keep legacy Symfony 1.4 applications running securely** on currently-maintained versions of PHP, **without changes to your application code** unless security absolutely requires them. PHP 5.3.4 is a minimum requirement. We actively test with PHP 5.4.x and are incorporating community fixes for 5.5.x and above.
 
-**Please do not use this fork for new projects. You should move on.** If you like PHP, check out [Symfony2](http://symfony.com/).
+**Please do not use this fork for new projects.**
+
+New Features
+------------
+
+* JSON schema type (json_encodes on save)
+
+* Redis session cache
+
+In your factories.yml
+```
+  storage:
+    class: sfCacheSessionStorage
+    param:
+      cache:
+        class: sfRedisCache
+        param:
+          server:
+            host: 127.0.0.1
+```
+In your app.yml
+```
+  redis:
+    server:
+      host: 127.0.0.1
+      select: 2
+```
+
 
 Acknowledgements
 ----------------
