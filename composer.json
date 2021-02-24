@@ -10,7 +10,7 @@
         "files": ["autoload.php"]
     },
     "suggest": {
-        "ozsynergy/doctrine1": "Doctrine plugin",
+        "drivensystems/doctrine1": "Doctrine plugin",
         "psr/log": "Psr logger"
     },
     "extra": {
