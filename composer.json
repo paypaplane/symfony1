@@ -1,5 +1,5 @@
 {
-    "name": "ozsynergy/symfony1",
+    "name": "drivensystems/symfony1",
     "description": "Fork of symfony 1.4 from punkave, php 7.2 compatability and without BC breaks",
     "license": "MIT",
     "require-dev": {
@@ -10,7 +10,7 @@
         "files": ["autoload.php"]
     },
     "suggest": {
-        "ozsynergy/doctrine1": "Doctrine plugin",
+        "drivensystems/doctrine1": "Doctrine plugin",
         "psr/log": "Psr logger"
     },
     "extra": {
