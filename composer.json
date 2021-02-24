@@ -1,5 +1,5 @@
 {
-    "name": "paypaplane/symfony1",
+    "name": "drivensystems/symfony1",
     "description": "Fork of symfony 1.4 from punkave, php 7.2 compatability and without BC breaks",
     "license": "MIT",
     "require-dev": {
